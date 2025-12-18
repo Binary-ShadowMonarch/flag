@@ -1,38 +1,190 @@
-# sv
+# 🇳🇵 Flag Construction Visualizer
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A **data-driven, step-by-step animated visualization system** for constructing national flags using their **official geometric instructions**.
 
-## Creating a project
+This project begins with the **National Flag of Nepal** — widely regarded as the most mathematically defined flag in the world — and is designed so that *new flags can be added purely via data and geometry definitions*, without touching rendering logic.
 
-If you're seeing this, you've probably already done this step. Congrats!
+---
 
-```sh
-# create a new project in the current directory
-npx sv create
+## ✨ What This Project Does
 
-# create a new project in my-app
-npx sv create my-app
+- Visually animates **geometric construction steps** (lines, arcs, circles, points)
+- Starts from **pure construction lines**, not a filled shape
+- Progressively builds the flag **exactly as described in official documents**
+- Fades construction lines and **reveals the final colored flag**
+- Allows **interactive control** over steps and animation flow
+
+---
+
+## 🧠 Core Idea
+
+> **Geometry is data. Rendering is generic.**
+
+Each flag defines:
+- Its construction steps (text + timing)
+- A geometry builder that outputs points, lines, arcs
+- Colors and metadata
+
+The renderer:
+- Knows nothing about flags
+- Only draws what the geometry builder returns
+- Animates based on step index
+
+---
+
+## 🛠 Tech Stack
+
+- **SvelteKit (Svelte 5)**
+- **Threlte** (Three.js renderer for Svelte)
+- **Three.js**
+- **TypeScript**
+- **pnpm**
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── lib/
+│   ├── components/
+│   │   ├── canvas/
+│   │   │   └── Scene.svelte        # Threlte renderer & animation logic
+│   │   └── ui/
+│   │       └── FlagInfo.svelte     # Flag information panel
+│   ├── data/
+│   │   ├── flags/
+│   │   │   ├── nepal.ts            # Nepal flag definition
+│   │   │   └── index.ts            # Flag registry
+│   │   └── types.ts                # Shared geometry & flag types
+│   ├── geometry/
+│   │   └── NepalFlagBuilder.ts     # Mathematical construction logic
+│   └── index.ts
+└── routes/
+    └── +page.svelte                # UI + controls
 ```
 
-## Developing
+---
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## 📐 Flag Definition (Data Layer)
 
-```sh
-npm run dev
+Each flag is defined declaratively.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+Example (simplified):
+
+```ts
+export const nepalFlag: FlagDefinition = {
+  id: 'nepal',
+  name: 'National Flag of Nepal',
+  country: 'Nepal 🇳🇵',
+  colors: {
+    primary: '#DC143C',
+    secondary: '#FFFFFF',
+    border: '#003893'
+  },
+  constructionSteps,
+  buildGeometry: (scale) => builder.build(),
+  buildUpToStep: (scale, step) => builder.buildUpToStep(step)
+};
 ```
 
-## Building
+No rendering code lives here.
 
-To create a production version of your app:
+---
 
-```sh
-npm run build
+## 📐 Geometry Builders (Math Layer)
+
+Builders:
+- Compute points, intersections, arcs, circles
+- Convert curves into renderable points
+- Respect the current construction step
+
+They return:
+
+```ts
+interface GeometryResult {
+  shape: Point2D[];
+  constructionLines?: ConstructionStepData[];
+  decorations: FlagDecoration[];
+  dimensions: {
+    width: number;
+    height: number;
+  };
+}
 ```
 
-You can preview the production build with `npm run preview`.
+---
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## 🎬 Animation Flow
+
+1. Start with **only construction lines**
+2. Animate each step sequentially
+3. Allow manual stepping forward/backward
+4. On final step:
+   - Fade construction lines
+   - Reveal filled shape + border
+   - Show decorations (sun, moon, etc.)
+
+---
+
+## ➕ Adding a New Flag
+
+To add a new flag:
+
+1. Create a new file:
+   ```
+   src/lib/data/flags/us.ts
+   ```
+
+2. Define:
+   - `constructionSteps`
+   - Geometry builder
+   - Metadata
+
+3. Register it in:
+   ```ts
+   src/lib/data/flags/index.ts
+   ```
+
+No renderer changes required.
+
+---
+
+## 🎮 Planned Controls
+
+- ▶ Play / ⏸ Pause animation
+- ⏭ Step forward / backward
+- 🎚 Speed control
+- 👁 Toggle construction visibility
+- 📍 Jump to any step
+
+---
+
+## 🚀 Running Locally
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Open:
+```
+http://localhost:5173
+```
+
+---
+
+## 📜 Sources
+
+- **Constitution of Nepal**, Schedule-1 (Article 8)
+- Official geometric construction descriptions
+
+---
+
+## 🧑‍💻 Author
+
+**Saurab Poudel**
+
+Learning graphics, geometry, and system-level thinking through visual projects.
+
+---
