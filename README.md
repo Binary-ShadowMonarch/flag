@@ -188,3 +188,17 @@ http://localhost:5173
 Learning graphics, geometry, and system-level thinking through visual projects.
 
 ---
+## 📄 License
+
+This project is licensed under the **GNU General Public License v3.0 (GPL-3.0)**.
+
+You are free to:
+- Use, study, and modify the source code
+- Redistribute the software and your modifications
+
+Under the following conditions:
+- Any derivative work **must also be licensed under GPL-3.0**
+- Source code must be made available when distributing binaries
+- License and copyright notices must be preserved
+
+See the `LICENSE` file for full terms.
