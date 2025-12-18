@@ -1,0 +1,33 @@
+# Dependency directories
+node_modules/
+.pnpm-debug.log*
+.yarn-integrity
+
+# Build artifacts
+dist/
+build/
+.svelte-kit/
+.vercel/
+.netlify/
+.cloudflare/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# Optional: IDE/OS-specific files
+.DS_Store
+.idea/
+.vscode/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Optional: Test coverage
+coverage/
+*.lcov
+.eslintcache
+
